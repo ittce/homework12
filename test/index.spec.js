@@ -1,20 +1,23 @@
-const { someAction } = require('../action');
-const { createBrowserHistory, History } =  require('history');
 
-jest.mock('history', () => {
-  const mHistory = ({ push: jest.fn() });
-  return {
-    createBrowserHistory: jest.fn(() => mHistory),
-  };
-});
-const mCreateBrowserHistory = createBrowserHistory;
+const Router = require('../router');
+
 
 describe('history校验', () => {
   it('should pass', () => {
-    const mHistory = mCreateBrowserHistory();
-    const actual = someAction();
-    expect(actual).toEqual({ type: 'NAVIGATE_HOME' });
-    expect(createBrowserHistory).toBeCalledTimes(2);
-    expect(mHistory.push).toBeCalledWith('/home');
+    //路由表
+    var routes = [{
+      id: ''
+    }, {
+      id: 'index',
+      title: '首页'
+    }, {
+      id: 'next',
+      title: '下一页'
+    }]
+
+    //路由器
+    var router = new Router(routes, 'next');
+    expect(router.currentRoute).toBe('next')
   });
 });
+
